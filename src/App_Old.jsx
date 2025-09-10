@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 
-// --- Data from your resume ---
+// --- Portfolio Data ---
+// All the text content for the portfolio is stored in this single object.
+// This makes it easy to update your information in one place without touching the component code.
 const portfolioData = {
   name: "Pavan D",
   title: "Data Scientist & AI Enthusiast",
@@ -68,7 +70,7 @@ const portfolioData = {
     {
       title: "CLARITY",
       description:
-        "Developing a multimodal AI system for chest X-ray diagnosis using CNN, RNN, and Generative AI to improve diagnostic accuracy.",
+        "An advanced multimodal AI system designed to assist radiologists. It integrates Convolutional and Recurrent Neural Networks with Generative AI to not only predict diseases from chest X-rays but also to generate detailed diagnostic reports and provide visual explanations using Grad-CAM, significantly enhancing diagnostic confidence and accuracy.",
       tags: ["Generative AI", "CNN", "RNN", "Grad-CAM"],
       imageUrl: "https://placehold.co/600x400/0D0D0D/FFF?text=CLARITY",
       githubUrl: "https://github.com/PavanDayananda",
@@ -77,16 +79,16 @@ const portfolioData = {
     {
       title: "EduGenie",
       description:
-        "Built a responsive UI with React and integrated Google Gemini API for intelligent academic insights. Implemented OCR with PyMuPDF, reducing manual data entry by 60%.",
+        "A smart academic tool that transforms static documents into interactive learning experiences. By leveraging the Gemini API and LangChain, EduGenie provides intelligent insights and summaries. Its OCR capabilities, powered by PyMuPDF, automate data extraction, cutting down manual entry efforts by over 60% and creating a more efficient learning workflow.",
       tags: ["React.js", "Gemini API", "FastAPI", "LLMs", "Tailwind CSS"],
       imageUrl: "https://placehold.co/600x400/0D0D0D/FFF?text=EduGenie",
-      githubUrl: "https://github.com/PavanDayananda",
+      githubUrl: "https://github.com/harshakl03/EduGenie",
       liveUrl: "#",
     },
     {
       title: "Diabetes Risk Prediction",
       description:
-        "A system using Random Forest and KNN to predict diabetes risk, achieving 84% accuracy. Applied feature engineering and class imbalance handling.",
+        "A crucial healthcare diagnostic tool that uses Machine Learning to provide early warnings for diabetes. By employing Random Forest and K-Nearest Neighbors models with robust feature engineering, the system achieves an 84% accuracy rate, demonstrating the power of predictive analytics in proactive health management.",
       tags: ["Python", "Scikit-learn", "Machine Learning"],
       imageUrl: "https://placehold.co/600x400/0D0D0D/FFF?text=ML+Model",
       githubUrl: "https://github.com/PavanDayananda",
@@ -95,7 +97,7 @@ const portfolioData = {
     {
       title: "InterConnect",
       description:
-        "Designed an interactive Power BI dashboard analyzing opinion gaps in an academic setting.",
+        "A prize-winning data storytelling project that visualizes the complex web of relationships and opinions within a campus community. Using ETL pipelines with BigQuery and an interactive Power BI dashboard, InterConnect transforms raw survey data into a compelling narrative, revealing actionable insights for improving student and faculty engagement.",
       tags: ["Power BI", "ETL", "BigQuery", "Data Visualization"],
       imageUrl: "https://placehold.co/600x400/0D0D0D/FFF?text=InterConnect",
       githubUrl: "https://github.com/PavanDayananda",
@@ -163,6 +165,26 @@ const portfolioData = {
 
 // --- Helper Components ---
 
+/**
+ * Renders animated blobs in the background for a decorative effect.
+ */
+const BackgroundBlobs = () => {
+  return (
+    <div
+      className="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden"
+      aria-hidden="true"
+    >
+      <div className="absolute top-[-20vh] left-[-25vw] w-[50vw] h-[50vh] bg-green-500/10 dark:bg-green-500/5 rounded-full blur-3xl animate-blob-1"></div>
+      <div className="absolute bottom-[-10vh] right-[-15vw] w-[40vw] h-[40vh] bg-purple-500/10 dark:bg-purple-500/5 rounded-full blur-3xl animate-blob-2"></div>
+      <div className="absolute top-[30vh] right-[10vw] w-[30vw] h-[30vh] bg-pink-500/10 dark:bg-pink-500/5 rounded-full blur-3xl animate-blob-3"></div>
+    </div>
+  );
+};
+
+/**
+ * A wrapper component for content sections.
+ * It uses the Intersection Observer API to apply a fade-in animation when the section scrolls into view.
+ */
 const Section = ({ id, children, className = "" }) => {
   const sectionRef = useRef(null);
 
@@ -195,15 +217,19 @@ const Section = ({ id, children, className = "" }) => {
     <section
       ref={sectionRef}
       id={id}
-      className={`py-20 px-4 sm:px-8 md:px-16 lg:px-24 min-h-screen/2 fade-in ${className}`}
+      className={`relative py-24 px-4 sm:px-6 lg:px-8 fade-in ${className}`}
     >
-      {children}
+      <div className="max-w-7xl mx-auto">{children}</div>
     </section>
   );
 };
 
-// --- Main Components (Structured like separate files) ---
+// --- Main Components (Structured like separate files for clarity) ---
 
+/**
+ * Creates a custom cursor that follows the mouse.
+ * Hidden on mobile devices.
+ */
 const CustomCursor = () => {
   const cursorRef = useRef(null);
   const followerRef = useRef(null);
@@ -250,75 +276,62 @@ const CustomCursor = () => {
   );
 };
 
-const Header = ({ onMenuClick }) => {
-  return (
-    <header className="fixed top-0 right-0 p-6 z-50">
-      <button
-        onClick={onMenuClick}
-        className="flex items-center gap-2 bg-white/10 dark:bg-neutral-800/50 backdrop-blur-sm text-neutral-800 dark:text-white px-4 py-2 rounded-full hover:bg-white/20 dark:hover:bg-neutral-700 transition-colors duration-300 shadow-lg"
-      >
-        <span>Menu</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="m3 12 2-2 4 4 6-6 4 4 2-2" />
-          <path d="m3 20 2-2 4 4 6-6 4 4 2-2" />
-        </svg>
-      </button>
-    </header>
-  );
-};
-
-const MobileMenu = ({ isOpen, onClose }) => {
-  const sections = [
-    "home",
-    "about",
-    "resume",
-    "skills",
-    "projects",
-    "achievements",
-    "contact",
-  ];
+/**
+ * The main header component.
+ * Displays a floating pill-shaped navigation on desktop and a status pill on mobile.
+ */
+const Header = ({ activeSection }) => {
+  const sections = ["home", "about", "skills", "projects", "contact"];
 
   const scrollToSection = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    onClose();
   };
 
   return (
-    <div
-      className={`fixed inset-0 bg-black bg-opacity-80 backdrop-blur-lg z-50 transform transition-transform duration-300 ${
-        isOpen ? "translate-x-0" : "translate-x-full"
-      }`}
-    >
-      <div className="flex justify-end p-6">
-        <button onClick={onClose} className="text-white text-3xl">
-          &times;
-        </button>
-      </div>
-      <nav className="flex flex-col items-center justify-center h-full -mt-16">
-        {sections.map((section) => (
+    <>
+      {/* Desktop Pill Header */}
+      <header className="hidden md:flex fixed top-6 left-1/2 -translate-x-1/2 z-50">
+        <nav className="flex items-center gap-4 bg-white/10 dark:bg-neutral-900/50 backdrop-blur-lg shadow-lg px-6 py-3 rounded-full">
           <a
-            key={section}
-            onClick={() => scrollToSection(section)}
-            className="text-neutral-300 hover:text-white capitalize text-4xl my-4 cursor-pointer transition-colors duration-300"
+            onClick={() => scrollToSection("home")}
+            className="text-lg font-bold cursor-pointer animated-gradient-text pr-2"
           >
-            {section}
+            |\|
           </a>
-        ))}
-      </nav>
-    </div>
+          <div className="w-px h-6 bg-neutral-300 dark:bg-neutral-700"></div>
+          <div className="flex items-center gap-5">
+            {sections.map((section) => (
+              <a
+                key={section}
+                onClick={() => scrollToSection(section)}
+                className={`capitalize cursor-pointer transition-colors text-sm ${
+                  activeSection === section
+                    ? "text-green-500 dark:text-green-400"
+                    : "text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white"
+                }`}
+              >
+                {section}
+              </a>
+            ))}
+          </div>
+        </nav>
+      </header>
+
+      {/* Mobile Top Bar - Displays current section */}
+      <div className="md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-40 transition-opacity duration-300">
+        <div className="flex justify-center items-center bg-white/50 dark:bg-neutral-900/50 backdrop-blur-lg shadow-lg px-4 py-2 rounded-full">
+          <span className="capitalize text-sm font-medium text-neutral-800 dark:text-neutral-200">
+            {activeSection}
+          </span>
+        </div>
+      </div>
+    </>
   );
 };
 
+/**
+ * The Hero (main landing) section of the portfolio.
+ */
 const Hero = ({ name, title, summary }) => {
   const scrollToProjects = () => {
     document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
@@ -327,38 +340,44 @@ const Hero = ({ name, title, summary }) => {
   return (
     <section
       id="home"
-      className="min-h-screen flex flex-col justify-center items-start px-4 sm:px-8 md:px-16 lg:px-24 relative"
+      className="min-h-screen flex flex-col justify-center items-start px-4 sm:px-6 lg:px-8 relative pt-20 md:pt-0"
     >
-      <div className="scroll-indicator absolute right-10 top-1/2 -translate-y-1/2 hidden md:flex items-center transform -rotate-90">
-        <span className="text-neutral-500 uppercase tracking-widest text-sm">
-          Scroll
-        </span>
-        <div className="w-10 h-px bg-neutral-500 ml-4"></div>
-      </div>
-      <h2 className="text-lg text-neutral-600 dark:text-neutral-400 font-light">
-        Hey, I'm a {title}
-      </h2>
-      <h1
-        className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold my-4 uppercase tracking-tighter animated-gradient-text"
-        style={{ lineHeight: "1" }}
-      >
-        {name}
-      </h1>
-      <div className="mt-12 max-w-2xl flex flex-col md:flex-row items-start md:items-center gap-6">
-        <p className="text-neutral-600 dark:text-neutral-300 text-lg">
-          {summary}
-        </p>
-        <button
-          onClick={scrollToProjects}
-          className="gradient-button flex-shrink-0 text-black font-bold py-3 px-6 rounded-full whitespace-nowrap"
+      <div className="max-w-7xl mx-auto w-full">
+        {/* Animated scroll indicator */}
+        <div className="scroll-indicator absolute right-0 top-1/2 -translate-y-1/2 hidden md:flex items-center transform -rotate-90">
+          <span className="text-neutral-500 uppercase tracking-widest text-sm">
+            Scroll
+          </span>
+          <div className="w-10 h-px bg-neutral-500 ml-4"></div>
+        </div>
+        <h2 className="text-lg text-neutral-600 dark:text-neutral-400 font-light">
+          Hey, I'm a {title}
+        </h2>
+        <h1
+          className="hero-name-glow text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold my-4 uppercase tracking-tighter animated-gradient-text"
+          style={{ lineHeight: "1" }}
         >
-          View My Work
-        </button>
+          {name}
+        </h1>
+        <div className="mt-12 max-w-2xl flex flex-col md:flex-row items-start md:items-center gap-6">
+          <p className="text-neutral-700 dark:text-neutral-300 text-lg">
+            {summary}
+          </p>
+          <button
+            onClick={scrollToProjects}
+            className="gradient-button flex-shrink-0 text-black font-bold py-3 px-6 rounded-full whitespace-nowrap"
+          >
+            View My Work
+          </button>
+        </div>
       </div>
     </section>
   );
 };
 
+/**
+ * About Me and Education section.
+ */
 const About = ({ education }) => {
   return (
     <Section id="about">
@@ -367,17 +386,17 @@ const About = ({ education }) => {
           <h2 className="text-sm uppercase text-neutral-500 tracking-widest mb-2">
             // About Me
           </h2>
-          <h3 className="text-4xl md:text-5xl font-bold text-neutral-800 dark:text-white mb-6">
+          <h3 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-6">
             Driven by Data, Defined by Results.
           </h3>
-          <p className="text-neutral-600 dark:text-neutral-300 text-lg mb-4">
+          <p className="text-neutral-700 dark:text-neutral-300 text-lg mb-4">
             I am passionate about solving real-world problems by turning ideas
             into clean, maintainable, and impactful data-driven solutions.
             You'll find me building side projects, diving into new tech stacks,
             or simply exploring what's next in the world of AI and web
             development.
           </p>
-          <p className="text-neutral-600 dark:text-neutral-300 text-lg">
+          <p className="text-neutral-700 dark:text-neutral-300 text-lg">
             My goal is to leverage my skills in machine learning and data
             science to contribute to innovative projects and drive business
             value.
@@ -387,8 +406,8 @@ const About = ({ education }) => {
           <h2 className="text-sm uppercase text-neutral-500 tracking-widest mb-2">
             // Education
           </h2>
-          <div className="bg-white dark:bg-neutral-800/50 p-6 rounded-lg border border-neutral-200 dark:border-neutral-700">
-            <h4 className="text-xl font-bold text-neutral-800 dark:text-white">
+          <div className="interactive-card bg-white dark:bg-neutral-800/50 p-6 rounded-lg border border-neutral-200 dark:border-neutral-700">
+            <h4 className="text-xl font-bold text-neutral-900 dark:text-white">
               {education.degree}
             </h4>
             <p className="text-green-600 dark:text-green-400 mt-1">
@@ -412,14 +431,17 @@ const About = ({ education }) => {
   );
 };
 
+/**
+ * A call-to-action section to download the resume.
+ */
 const DownloadResume = () => {
   return (
     <Section id="resume">
       <div className="text-center bg-white dark:bg-neutral-800/50 border border-neutral-200 dark:border-neutral-700 rounded-lg p-12 float-animation">
-        <h2 className="text-3xl md:text-4xl font-bold text-neutral-800 dark:text-white mb-4">
+        <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white mb-4">
           Interested in My Work?
         </h2>
-        <p className="text-neutral-600 dark:text-neutral-300 max-w-2xl mx-auto mb-8">
+        <p className="text-neutral-700 dark:text-neutral-300 max-w-2xl mx-auto mb-8">
           You can download a PDF version of my resume to get a more detailed
           look at my experience and qualifications.
         </p>
@@ -439,6 +461,9 @@ const DownloadResume = () => {
   );
 };
 
+/**
+ * Displays skills categorized in interactive cards.
+ */
 const Skills = ({ skills }) => {
   const CodeIcon = () => (
     <svg
@@ -458,6 +483,7 @@ const Skills = ({ skills }) => {
     </svg>
   );
 
+  // Links for each skill to their official page for more information.
   const skillLinks = {
     Python: "https://www.python.org/",
     "SQL (MySQL)": "https://www.mysql.com/",
@@ -486,14 +512,17 @@ const Skills = ({ skills }) => {
       <h2 className="text-sm uppercase text-neutral-500 tracking-widest mb-2">
         // My Skills
       </h2>
-      <h3 className="text-4xl md:text-5xl font-bold text-neutral-800 dark:text-white mb-12">
+      <h3 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-12">
         The Tools Behind My Work
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {skills.map((skillCategory) => (
-          <div key={skillCategory.category} className="group">
-            <div className="flex items-center justify-between mb-4 pb-4 border-b border-neutral-200 dark:border-neutral-800">
-              <h4 className="text-xl text-neutral-800 dark:text-white font-semibold">
+          <div
+            key={skillCategory.category}
+            className="interactive-card bg-white dark:bg-neutral-800/20 p-6 rounded-lg border border-neutral-200 dark:border-neutral-800"
+          >
+            <div className="flex items-center justify-between mb-4 pb-4 border-b border-neutral-200 dark:border-neutral-700">
+              <h4 className="text-xl text-neutral-900 dark:text-white font-semibold">
                 {skillCategory.category}
               </h4>
               <CodeIcon />
@@ -502,7 +531,7 @@ const Skills = ({ skills }) => {
               {skillCategory.items.map((item) => {
                 const url = skillLinks[item];
                 const commonClasses =
-                  "bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 text-sm font-medium px-3 py-1 rounded-full transition-all duration-300 transform hover:scale-110 hover:shadow-lg hover:shadow-green-500/20";
+                  "bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 text-sm font-medium px-3 py-1 rounded-full transition-all duration-300 transform hover:scale-110 hover:shadow-lg hover:shadow-green-500/20";
                 if (url) {
                   return (
                     <a
@@ -530,6 +559,9 @@ const Skills = ({ skills }) => {
   );
 };
 
+/**
+ * Displays project cards in a grid layout.
+ */
 const Projects = ({ projects }) => {
   const GithubIcon = () => (
     <svg
@@ -569,27 +601,28 @@ const Projects = ({ projects }) => {
       <h2 className="text-sm uppercase text-neutral-500 tracking-widest mb-2">
         // Explore Work
       </h2>
-      <h3 className="text-4xl md:text-5xl font-bold text-neutral-800 dark:text-white mb-12">
+      <h3 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-12">
         A Showcase of My Latest Projects
       </h3>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {projects.map((project, index) => (
           <div
             key={index}
-            className="flex flex-col group bg-white dark:bg-neutral-800/20 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800"
+            className="flex flex-col group interactive-card bg-white dark:bg-neutral-800/20 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800"
           >
-            <div className="overflow-hidden rounded-lg shadow-2xl mb-6">
+            <div className="overflow-hidden rounded-lg shadow-2xl mb-6 select-none">
               <img
                 src={project.imageUrl}
                 alt={project.title}
-                className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500"
+                className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500 select-none"
+                draggable="false"
               />
             </div>
-            <div>
-              <h4 className="text-2xl font-bold text-neutral-800 dark:text-white mb-2">
+            <div className="select-none">
+              <h4 className="text-2xl font-bold text-neutral-900 dark:text-white mb-2">
                 {project.title}
               </h4>
-              <p className="text-neutral-600 dark:text-neutral-400 mb-4 flex-grow">
+              <p className="text-neutral-700 dark:text-neutral-400 mb-4 flex-grow">
                 {project.description}
               </p>
               <div className="flex flex-wrap gap-2 mb-4">
@@ -602,24 +635,47 @@ const Projects = ({ projects }) => {
                   </span>
                 ))}
               </div>
-              <div className="flex items-center gap-4 mt-auto">
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-neutral-600 dark:text-neutral-300 hover:text-green-600 dark:hover:text-green-400 transition-colors"
-                >
-                  <GithubIcon /> Code
-                </a>
-                <a
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-neutral-600 dark:text-neutral-300 hover:text-green-600 dark:hover:text-green-400 transition-colors"
-                >
-                  <ExternalLinkIcon /> Live Demo
-                </a>
-              </div>
+            </div>
+            {/* Move the links outside of the inner <div> to avoid flex-grow or pointer-events issues */}
+            <div className="flex items-center gap-4 mt-4">
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-neutral-600 dark:text-neutral-300 hover:text-green-600 dark:hover:text-green-400 transition-colors select-auto cursor-pointer"
+                tabIndex={0}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  window.open(
+                    project.githubUrl,
+                    "_blank",
+                    "noopener,noreferrer"
+                  );
+                }}
+              >
+                <GithubIcon /> Code
+              </a>
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-neutral-600 dark:text-neutral-300 hover:text-green-600 dark:hover:text-green-400 transition-colors select-auto cursor-pointer"
+                tabIndex={0}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (project.liveUrl !== "#") {
+                    window.open(
+                      project.liveUrl,
+                      "_blank",
+                      "noopener,noreferrer"
+                    );
+                  }
+                }}
+              >
+                <ExternalLinkIcon /> Live Demo
+              </a>
             </div>
           </div>
         ))}
@@ -628,6 +684,9 @@ const Projects = ({ projects }) => {
   );
 };
 
+/**
+ * Displays Achievements and Certifications in a two-column layout.
+ */
 const AchievementsAndCerts = ({ achievements, certifications }) => {
   return (
     <Section id="achievements">
@@ -636,19 +695,19 @@ const AchievementsAndCerts = ({ achievements, certifications }) => {
           <h2 className="text-sm uppercase text-neutral-500 tracking-widest mb-2">
             // Achievements
           </h2>
-          <h3 className="text-4xl md:text-5xl font-bold text-neutral-800 dark:text-white mb-8">
+          <h3 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-8">
             Milestones & Recognition
           </h3>
           <div className="space-y-6">
             {achievements.map((ach, index) => (
               <div
                 key={index}
-                className="bg-white dark:bg-neutral-800/50 p-6 rounded-lg border border-neutral-200 dark:border-neutral-700"
+                className="interactive-card bg-white dark:bg-neutral-800/50 p-6 rounded-lg border border-neutral-200 dark:border-neutral-700"
               >
-                <h4 className="font-bold text-lg text-neutral-800 dark:text-white">
+                <h4 className="font-bold text-lg text-neutral-900 dark:text-white">
                   {ach.title}
                 </h4>
-                <p className="text-neutral-600 dark:text-neutral-400 text-sm mt-1">
+                <p className="text-neutral-700 dark:text-neutral-400 text-sm mt-1">
                   {ach.description}
                 </p>
                 {ach.date && (
@@ -664,21 +723,21 @@ const AchievementsAndCerts = ({ achievements, certifications }) => {
           <h2 className="text-sm uppercase text-neutral-500 tracking-widest mb-2">
             // Certifications
           </h2>
-          <h3 className="text-4xl md:text-5xl font-bold text-neutral-800 dark:text-white mb-8">
+          <h3 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-8">
             Continuous Learning
           </h3>
           <div className="space-y-6">
             {certifications.map((cert, index) => (
               <div
                 key={index}
-                className="bg-white dark:bg-neutral-800/50 p-6 rounded-lg border border-neutral-200 dark:border-neutral-700 flex items-center gap-4"
+                className="interactive-card bg-white dark:bg-neutral-800/50 p-6 rounded-lg border border-neutral-200 dark:border-neutral-700 flex items-center gap-4"
               >
                 {cert.icon()}
                 <div>
-                  <h4 className="font-bold text-lg text-neutral-800 dark:text-white">
+                  <h4 className="font-bold text-lg text-neutral-900 dark:text-white">
                     {cert.name}
                   </h4>
-                  <p className="text-neutral-600 dark:text-neutral-400 text-sm mt-1">
+                  <p className="text-neutral-700 dark:text-neutral-400 text-sm mt-1">
                     {cert.issuer}
                   </p>
                 </div>
@@ -691,6 +750,9 @@ const AchievementsAndCerts = ({ achievements, certifications }) => {
   );
 };
 
+/**
+ * A slider component for testimonials.
+ */
 const Testimonials = ({ testimonials }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -711,25 +773,22 @@ const Testimonials = ({ testimonials }) => {
       <h2 className="text-sm uppercase text-neutral-500 tracking-widest mb-2">
         // Testimonials
       </h2>
-      <h3 className="text-4xl md:text-5xl font-bold text-neutral-800 dark:text-white mb-12">
+      <h3 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white text-center mb-12">
         What People Say About My Work
       </h3>
-      <div className="flex flex-col md:flex-row items-center gap-12">
-        <div className="flex-shrink-0 text-green-500 dark:text-green-400 text-8xl opacity-20">
-          &ldquo;
-        </div>
-        <div className="flex-grow">
-          <p className="text-2xl md:text-3xl font-light text-neutral-700 dark:text-neutral-200 leading-relaxed mb-8">
-            {current.quote}
+      <div className="relative max-w-3xl mx-auto">
+        <div className="bg-white dark:bg-neutral-800/20 p-8 rounded-lg border border-neutral-200 dark:border-neutral-800 shadow-lg text-center">
+          <p className="text-xl md:text-2xl font-light text-neutral-800 dark:text-neutral-200 leading-relaxed mb-6">
+            "{current.quote}"
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center justify-center gap-4">
             <img
               src={current.image}
               alt={current.name}
               className="w-16 h-16 rounded-full object-cover border-2 border-neutral-200 dark:border-neutral-700"
             />
             <div>
-              <p className="text-neutral-800 dark:text-white font-bold">
+              <p className="text-neutral-900 dark:text-white font-bold">
                 {current.name}
               </p>
               <p className="text-neutral-600 dark:text-neutral-400">
@@ -738,11 +797,9 @@ const Testimonials = ({ testimonials }) => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="flex justify-start gap-4 mt-12 ml-10">
         <button
           onClick={prevTestimonial}
-          className="bg-green-500/20 text-green-600 dark:text-green-400 hover:bg-green-500/40 p-3 rounded-full transition-colors duration-300"
+          className="absolute top-1/2 -translate-y-1/2 -left-6 bg-white/50 dark:bg-neutral-800/50 text-neutral-700 dark:text-neutral-300 hover:bg-white dark:hover:bg-neutral-700 p-3 rounded-full transition-colors duration-300 shadow-md"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -760,7 +817,7 @@ const Testimonials = ({ testimonials }) => {
         </button>
         <button
           onClick={nextTestimonial}
-          className="bg-green-500/20 text-green-600 dark:text-green-400 hover:bg-green-500/40 p-3 rounded-full transition-colors duration-300"
+          className="absolute top-1/2 -translate-y-1/2 -right-6 bg-white/50 dark:bg-neutral-800/50 text-neutral-700 dark:text-neutral-300 hover:bg-white dark:hover:bg-neutral-700 p-3 rounded-full transition-colors duration-300 shadow-md"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -781,17 +838,20 @@ const Testimonials = ({ testimonials }) => {
   );
 };
 
+/**
+ * The footer component with contact information.
+ */
 const Footer = ({ name, contact }) => {
   return (
     <footer
       id="contact"
-      className="px-4 sm:px-8 md:px-16 lg:px-24 py-16 border-t border-neutral-200 dark:border-neutral-800"
+      className="px-4 sm:px-6 lg:px-8 py-16 border-t border-neutral-200 dark:border-neutral-800"
     >
-      <div className="container mx-auto text-center">
-        <h3 className="text-3xl md:text-4xl font-bold text-neutral-800 dark:text-white mb-4">
+      <div className="max-w-7xl mx-auto text-center">
+        <h3 className="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white mb-4">
           Let's Connect
         </h3>
-        <p className="text-neutral-600 dark:text-neutral-400 max-w-xl mx-auto mb-8">
+        <p className="text-neutral-700 dark:text-neutral-400 max-w-xl mx-auto mb-8">
           I'm currently seeking new opportunities. If you have a project in mind
           or just want to say hi, feel free to reach out.
         </p>
@@ -806,7 +866,7 @@ const Footer = ({ name, contact }) => {
             href={contact.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-colors"
+            className="text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-colors"
           >
             GitHub
           </a>
@@ -814,12 +874,12 @@ const Footer = ({ name, contact }) => {
             href={contact.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-colors"
+            className="text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-colors"
           >
             LinkedIn
           </a>
         </div>
-        <p className="text-neutral-400 dark:text-neutral-600 text-sm mt-16">
+        <p className="text-neutral-500 dark:text-neutral-600 text-sm mt-16">
           &copy; {new Date().getFullYear()} {name}. All Rights Reserved.
         </p>
       </div>
@@ -827,6 +887,9 @@ const Footer = ({ name, contact }) => {
   );
 };
 
+/**
+ * A floating button to toggle between light and dark themes.
+ */
 const ThemeToggle = ({ theme, toggleTheme }) => {
   const SunIcon = () => (
     <svg
@@ -878,16 +941,99 @@ const ThemeToggle = ({ theme, toggleTheme }) => {
   );
 };
 
+/**
+ * A floating button that appears on scroll, allowing users to quickly return to the top of the page.
+ */
+const BackToTopButton = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggleVisibility = () => {
+    if (window.pageYOffset > 300) {
+      setIsVisible(true);
+    } else {
+      setIsVisible(false);
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", toggleVisibility);
+    return () => {
+      window.removeEventListener("scroll", toggleVisibility);
+    };
+  }, []);
+
+  return (
+    <button
+      onClick={scrollToTop}
+      className={`fixed bottom-6 right-6 z-50 bg-white/20 dark:bg-neutral-800/50 backdrop-blur-sm p-3 rounded-full text-neutral-800 dark:text-white hover:bg-white/40 dark:hover:bg-neutral-700 transition-all duration-300 shadow-lg ${
+        isVisible ? "opacity-100" : "opacity-0"
+      }`}
+      aria-label="Back to top"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="m18 15-6-6-6 6" />
+      </svg>
+    </button>
+  );
+};
+
 // --- App Component (The main entry point) ---
 
 export default function App() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // State to manage the theme (light/dark)
   const [theme, setTheme] = useState("dark");
+  // State to track the currently active section for the navigation bar
+  const [activeSection, setActiveSection] = useState("home");
 
+  // Toggles the theme between 'dark' and 'light'
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
   };
 
+  // This effect uses an Intersection Observer to detect which section is currently in the viewport
+  // and updates the 'activeSection' state accordingly. This is used to highlight the active link in the nav bar.
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-30% 0px -70% 0px" } // The section is considered active when it's in the middle 40% of the screen
+    );
+
+    document.querySelectorAll("section[id]").forEach((section) => {
+      observer.observe(section);
+    });
+
+    return () => {
+      document.querySelectorAll("section[id]").forEach((section) => {
+        observer.unobserve(section);
+      });
+    };
+  }, []);
+
+  // This effect toggles the 'dark' class on the HTML element when the theme changes.
+  // Tailwind's dark mode variant (`dark:`) uses this class to apply dark styles.
   useEffect(() => {
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
@@ -896,15 +1042,27 @@ export default function App() {
     }
   }, [theme]);
 
+  // This effect injects a <style> tag into the document's head.
+  // It contains all the custom CSS animations and styles that are not covered by Tailwind's utility classes.
   useEffect(() => {
     const style = document.createElement("style");
     style.innerHTML = `
+            /* Google Font Import */
             @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap');
             
+            html {
+                /* Smooth scrolling for anchor links */
+                scroll-behavior: smooth;
+                /* Always show scrollbar to prevent layout shift */
+                overflow-y: scroll;
+            }
+
+            /* Base body styles for light/dark mode transition */
             body {
-                background-color: #F5F5F5; /* Light mode default */
-                color: #171717; /* Light mode text */
+                background-color: #F5F5F5;
+                color: #171717;
                 font-family: 'Inter', sans-serif;
+                transition: background-color 0.5s ease, color 0.5s ease;
             }
 
             .dark body {
@@ -912,6 +1070,7 @@ export default function App() {
                 color: #F5F5F5;
             }
 
+            /* Custom scrollbar styling for a modern look */
             ::-webkit-scrollbar { width: 8px; }
             ::-webkit-scrollbar-track { background: #F5F5F5; }
             ::-webkit-scrollbar-thumb { background: #D4D4D4; border-radius: 4px; }
@@ -921,6 +1080,7 @@ export default function App() {
             .dark ::-webkit-scrollbar-thumb { background: #2D2D2D; }
             .dark ::-webkit-scrollbar-thumb:hover { background: #3F3F3F; }
 
+            /* Custom cursor styles */
             .custom-cursor {
                 position: fixed; left: -5px; top: -5px; width: 10px; height: 10px;
                 background-color: #22c55e; border-radius: 50%; pointer-events: none;
@@ -934,7 +1094,8 @@ export default function App() {
                 z-index: 9998; transition: all 0.3s ease-out;
             }
             .dark .custom-cursor-follower { border-color: #4A4A4A; }
-
+            
+            /* Active state for the cursor when hovering over links/buttons */
             .custom-cursor-follower.active {
                 transform: scale(1.5);
                 background-color: rgba(34, 197, 94, 0.1);
@@ -945,6 +1106,7 @@ export default function App() {
                  border-color: rgba(74, 222, 128, 0.5);
             }
 
+            /* Fade-in animation for sections on scroll */
             .fade-in {
                 opacity: 0; transform: translateY(30px);
                 transition: opacity 0.8s ease-out, transform 0.8s ease-out;
@@ -953,28 +1115,48 @@ export default function App() {
                 opacity: 1; transform: translateY(0);
             }
             
+            /* Animated gradient for text elements */
             .animated-gradient-text {
-                background: linear-gradient(90deg, #10B981, #A78BFA, #F472B6, #10B981);
+                background: linear-gradient(90deg, #10B981, #8B5CF6, #EC4899, #10B981);
                 background-size: 400% auto;
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
-                animation: animated-gradient 3s linear infinite;
+                animation: animated-gradient 4s linear infinite;
             }
             .dark .animated-gradient-text {
                  background-image: linear-gradient(90deg, #4ADE80, #A78BFA, #F472B6, #4ADE80);
             }
 
             @keyframes animated-gradient { to { background-position: 400% center; } }
+            
+            /* Pulsating glow effect behind the hero name */
+            .hero-name-glow { position: relative; }
+            .dark .hero-name-glow::before {
+                content: '';
+                position: absolute;
+                left: 50%; top: 50%;
+                transform: translate(-50%, -50%);
+                width: 120%; height: 120%;
+                background: radial-gradient(circle, rgba(167, 139, 250, 0.15) 0%, rgba(167, 139, 250, 0) 70%);
+                z-index: -1;
+                animation: pulse-glow 5s infinite ease-in-out;
+            }
 
+            @keyframes pulse-glow {
+                0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.95); }
+                50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+            }
+
+            /* Gentle floating animation for the resume download section */
             @keyframes float {
-                0% { transform: translateY(0px); }
+                0%, 100% { transform: translateY(0px); }
                 50% { transform: translateY(-10px); }
-                100% { transform: translateY(0px); }
             }
             .float-animation {
                 animation: float 4s ease-in-out infinite;
             }
 
+            /* Bouncing animation for the scroll indicator */
             @keyframes scroll-bounce {
                 0%, 100% { transform: translateY(0) rotate(-90deg); }
                 50% { transform: translateY(-15px) rotate(-90deg); }
@@ -983,6 +1165,7 @@ export default function App() {
                 animation: scroll-bounce 2s infinite ease-in-out;
             }
             
+            /* Gradient background for buttons with a hover effect */
             .gradient-button {
                 background-size: 200% auto;
                 background-image: linear-gradient(to right, #4ADE80 0%, #34D399 50%, #4ADE80 100%);
@@ -991,6 +1174,41 @@ export default function App() {
             .gradient-button:hover {
                 background-position: right center;
             }
+            
+            /* Simple and clean card hover effect: lift */
+            .interactive-card {
+                position: relative;
+                transition: transform 0.3s ease;
+            }
+            .interactive-card:hover {
+                transform: translateY(-8px);
+            }
+
+            /* Glowing border effect on hover for dark mode cards */
+            .dark .interactive-card::before {
+                content: '';
+                position: absolute;
+                top: 0; left: 0; right: 0; bottom: 0;
+                border-radius: 0.5rem; /* Matches Tailwind's 'rounded-lg' */
+                border: 1px solid transparent;
+                background: linear-gradient(to bottom right, #4ade80, #a78bfa) border-box;
+                -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+                -webkit-mask-composite: destination-out;
+                mask-composite: exclude;
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out;
+            }
+            .dark .interactive-card:hover::before {
+                opacity: 0.5;
+            }
+
+            /* Animations for the background blobs */
+            @keyframes blob-1 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, -20px) scale(1.1); } }
+            .animate-blob-1 { animation: blob-1 8s infinite ease-in-out; }
+            @keyframes blob-2 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-20px, 15px) scale(0.9); } }
+            .animate-blob-2 { animation: blob-2 10s infinite ease-in-out; }
+            @keyframes blob-3 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(15px, 25px) scale(1.1); } }
+            .animate-blob-3 { animation: blob-3 9s infinite ease-in-out; }
 
         `;
     document.head.appendChild(style);
@@ -1003,13 +1221,16 @@ export default function App() {
     };
   }, [theme]);
 
+  // Main JSX render for the entire application
   return (
-    <main>
+    <main className="relative z-0">
+      <BackgroundBlobs />
       <CustomCursor />
       <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
-      <Header onMenuClick={() => setIsMenuOpen(true)} />
-      <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+      <BackToTopButton />
+      <Header activeSection={activeSection} />
 
+      {/* Each major part of the page is its own component */}
       <Hero
         name={portfolioData.name}
         title={portfolioData.title}

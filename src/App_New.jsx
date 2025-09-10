@@ -19,7 +19,7 @@ import {
 } from "./components";
 
 // Import portfolio data
-import portfolioData from "./data/portfolioData.jsx";
+import portfolioData from "./data/portfolioData";
 
 /**
  * Main App Component
@@ -78,7 +78,7 @@ export default function App() {
       {/* Background and UI elements */}
       <BackgroundBlobs />
       <CustomCursor />
-      {/*<ThemeToggle theme={theme} toggleTheme={toggleTheme} />*/}
+      <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
       <BackToTopButton />
       <Header activeSection={activeSection} />
 

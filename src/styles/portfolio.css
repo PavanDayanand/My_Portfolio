@@ -1,0 +1,290 @@
+/* Portfolio Custom Styles */
+
+/* Google Font Import */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap");
+
+html {
+  /* Smooth scrolling for anchor links */
+  scroll-behavior: smooth;
+  /* Always show scrollbar to prevent layout shift */
+  overflow-y: scroll;
+}
+
+/* Base body styles for light/dark mode transition */
+body {
+  background-color: #f5f5f5;
+  color: #171717;
+  font-family: "Inter", sans-serif;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.dark body {
+  background-color: #0d0d0d;
+  color: #f5f5f5;
+}
+
+/* Custom scrollbar styling for a modern look */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d4d4d4;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a3a3a3;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #0d0d0d;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #2d2d2d;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #3f3f3f;
+}
+
+/* Custom cursor styles */
+.custom-cursor {
+  position: fixed;
+  left: -5px;
+  top: -5px;
+  width: 10px;
+  height: 10px;
+  background-color: #22c55e;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.1s ease-out;
+}
+
+.dark .custom-cursor {
+  background-color: #4ade80;
+}
+
+.custom-cursor-follower {
+  position: fixed;
+  left: -20px;
+  top: -20px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #a3a3a3;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transition: all 0.3s ease-out;
+}
+
+.dark .custom-cursor-follower {
+  border-color: #4a4a4a;
+}
+
+/* Active state for the cursor when hovering over links/buttons */
+.custom-cursor-follower.active {
+  transform: scale(1.5);
+  background-color: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+.dark .custom-cursor-follower.active {
+  background-color: rgba(74, 222, 128, 0.1);
+  border-color: rgba(74, 222, 128, 0.5);
+}
+
+/* Fade-in animation for sections on scroll */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Animated gradient for text elements */
+.animated-gradient-text {
+  background: linear-gradient(90deg, #10b981, #8b5cf6, #ec4899, #10b981);
+  background-size: 400% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: animated-gradient 4s linear infinite;
+}
+
+.dark .animated-gradient-text {
+  background-image: linear-gradient(90deg, #4ade80, #a78bfa, #f472b6, #4ade80);
+}
+
+@keyframes animated-gradient {
+  to {
+    background-position: 400% center;
+  }
+}
+
+/* Pulsating glow effect behind the hero name */
+.hero-name-glow {
+  position: relative;
+}
+
+.dark .hero-name-glow::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(
+    circle,
+    rgba(167, 139, 250, 0.15) 0%,
+    rgba(167, 139, 250, 0) 70%
+  );
+  z-index: -1;
+  animation: pulse-glow 5s infinite ease-in-out;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+/* Gentle floating animation for the resume download section */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.float-animation {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Bouncing animation for the scroll indicator */
+@keyframes scroll-bounce {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-90deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(-90deg);
+  }
+}
+
+.scroll-indicator {
+  animation: scroll-bounce 2s infinite ease-in-out;
+}
+
+/* Gradient background for buttons with a hover effect */
+.gradient-button {
+  background-size: 200% auto;
+  background-image: linear-gradient(
+    to right,
+    #4ade80 0%,
+    #34d399 50%,
+    #4ade80 100%
+  );
+  transition: background-position 0.5s ease;
+}
+
+.gradient-button:hover {
+  background-position: right center;
+}
+
+/* Simple and clean card hover effect: lift */
+.interactive-card {
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.interactive-card:hover {
+  transform: translateY(-8px);
+}
+
+/* Glowing border effect on hover for dark mode cards */
+.dark .interactive-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 0.5rem; /* Matches Tailwind's 'rounded-lg' */
+  border: 1px solid transparent;
+  background: linear-gradient(to bottom right, #4ade80, #a78bfa) border-box;
+  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.dark .interactive-card:hover::before {
+  opacity: 0.5;
+}
+
+/* Animations for the background blobs */
+@keyframes blob-1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(30px, -20px) scale(1.1);
+  }
+}
+
+.animate-blob-1 {
+  animation: blob-1 8s infinite ease-in-out;
+}
+
+@keyframes blob-2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-20px, 15px) scale(0.9);
+  }
+}
+
+.animate-blob-2 {
+  animation: blob-2 10s infinite ease-in-out;
+}
+
+@keyframes blob-3 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(15px, 25px) scale(1.1);
+  }
+}
+
+.animate-blob-3 {
+  animation: blob-3 9s infinite ease-in-out;
+}
