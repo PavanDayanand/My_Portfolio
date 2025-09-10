@@ -1,0 +1,827 @@
+import React, { useState, useEffect, useRef } from 'react';
+
+// --- Data from your resume ---
+const portfolioData = {
+    name: "Pavan D",
+    title: "Data Scientist & AI Enthusiast",
+    summary: "A Computer Science student specializing in Data Science with strong expertise in Machine Learning, Data Analytics, and AI-driven solutions. I turn complex data into clean, scalable, and user-friendly applications.",
+    contact: {
+        email: "pavan.radapa@gmail.com",
+        phone: "+91 7204163730",
+        linkedin: "https://www.linkedin.com/in/pavan-d-b5b3b325b/",
+        github: "https://github.com/PavanDayananda",
+    },
+    education: {
+        institution: "Bangalore Institute of Technology",
+        location: "VV Puram, Bangalore, India",
+        degree: "Computer Science and Engineering (Data Science)",
+        cgpa: "8.44/10",
+        duration: "December 2022 - Present",
+    },
+    skills: [
+        {
+            category: "Data Science & ML/DL",
+            items: ["Data Preprocessing", "EDA", "Feature Engineering", "ETL", "Supervised & Unsupervised Learning", "Generative AI", "CNN", "LLMs"],
+        },
+        {
+            category: "Languages & Databases",
+            items: ["Python", "SQL (MySQL)"],
+        },
+        {
+            category: "Frameworks & Libraries",
+            items: ["Pandas", "NumPy", "Matplotlib", "Scikit-learn", "LangChain", "React.js", "FastAPI", "Tailwind CSS"],
+        },
+        {
+            category: "Tools & Platforms",
+            items: ["VS Code", "Jupyter Notebook", "Tableau", "PowerBI", "Figma", "BigQuery", "Git", "GitHub"],
+        },
+    ],
+    projects: [
+        {
+            title: "CLARITY",
+            description: "An advanced multimodal AI system designed to assist radiologists. It integrates Convolutional and Recurrent Neural Networks with Generative AI to not only predict diseases from chest X-rays but also to generate detailed diagnostic reports and provide visual explanations using Grad-CAM, significantly enhancing diagnostic confidence and accuracy.",
+            tags: ["Generative AI", "CNN", "RNN", "Grad-CAM"],
+            imageUrl: "https://placehold.co/600x400/0D0D0D/FFF?text=CLARITY",
+            githubUrl: "https://github.com/PavanDayananda",
+            liveUrl: "#",
+        },
+        {
+            title: "EduGenie",
+            description: "A smart academic tool that transforms static documents into interactive learning experiences. By leveraging the Gemini API and LangChain, EduGenie provides intelligent insights and summaries. Its OCR capabilities, powered by PyMuPDF, automate data extraction, cutting down manual entry efforts by over 60% and creating a more efficient learning workflow.",
+            tags: ["React.js", "Gemini API", "FastAPI", "LLMs", "Tailwind CSS"],
+            imageUrl: "https://placehold.co/600x400/0D0D0D/FFF?text=EduGenie",
+            githubUrl: "https://github.com/PavanDayananda",
+            liveUrl: "#",
+        },
+        {
+            title: "Diabetes Risk Prediction",
+            description: "A crucial healthcare diagnostic tool that uses Machine Learning to provide early warnings for diabetes. By employing Random Forest and K-Nearest Neighbors models with robust feature engineering, the system achieves an 84% accuracy rate, demonstrating the power of predictive analytics in proactive health management.",
+            tags: ["Python", "Scikit-learn", "Machine Learning"],
+            imageUrl: "https://placehold.co/600x400/0D0D0D/FFF?text=ML+Model",
+            githubUrl: "https://github.com/PavanDayananda",
+            liveUrl: "#",
+        },
+        {
+            title: "InterConnect",
+            description: "A prize-winning data storytelling project that visualizes the complex web of relationships and opinions within a campus community. Using ETL pipelines with BigQuery and an interactive Power BI dashboard, InterConnect transforms raw survey data into a compelling narrative, revealing actionable insights for improving student and faculty engagement.",
+            tags: ["Power BI", "ETL", "BigQuery", "Data Visualization"],
+            imageUrl: "https://placehold.co/600x400/0D0D0D/FFF?text=InterConnect",
+            githubUrl: "https://github.com/PavanDayananda",
+            liveUrl: "#",
+        },
+    ],
+    achievements: [
+        {
+            title: "2nd Place, 'Turn Data into Stories' Exhibition",
+            description: "Secured 2nd place among 15 teams for the InterConnect Project.",
+            date: "Dec 18, 2024",
+        },
+        {
+            title: "2nd Place, GENAI Project Exhibition",
+            description: "Recognized for the 'EduGenie' project in the 'From Queries to Creativity - MongoDB & GenAI' event.",
+        },
+         {
+            title: "2nd Place in IoT Project Exhibition",
+            description: "Awarded for excellence in the annual departmental IoT project showcase.",
+        },
+    ],
+    certifications: [
+        {
+            name: "Juniper Networks Certified Associate, Cloud (JNCIA-Cloud)",
+            issuer: "Juniper Networks",
+            icon: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-green-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
+        },
+    ],
+    testimonials: [
+        {
+            quote: "Pavan's technical expertise and collaborative spirit made a complex project feel effortless. He immediately understood our product goals and translated them into a beautifully optimized solution.",
+            name: "Jane Doe",
+            title: "Project Lead, Tech Solutions",
+            image: "https://placehold.co/100x100/333/FFF?text=JD",
+        },
+        {
+            quote: "Working with Pavan was a game-changer. His innovative approach to data analysis provided critical insights that drove our strategy forward. Highly recommended!",
+            name: "John Smith",
+            title: "Data Manager, Innovate Corp",
+            image: "https://placehold.co/100x100/333/FFF?text=JS",
+        },
+    ],
+};
+
+// --- Helper Components ---
+const BackgroundBlobs = () => {
+    return (
+        <div className="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden" aria-hidden="true">
+            <div className="absolute top-[-20vh] left-[-25vw] w-[50vw] h-[50vh] bg-green-500/10 dark:bg-green-500/5 rounded-full blur-3xl animate-blob-1"></div>
+            <div className="absolute bottom-[-10vh] right-[-15vw] w-[40vw] h-[40vh] bg-purple-500/10 dark:bg-purple-500/5 rounded-full blur-3xl animate-blob-2"></div>
+            <div className="absolute top-[30vh] right-[10vw] w-[30vw] h-[30vh] bg-pink-500/10 dark:bg-pink-500/5 rounded-full blur-3xl animate-blob-3"></div>
+        </div>
+    );
+};
+
+
+const Section = ({ id, children, className = '' }) => {
+    const sectionRef = useRef(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in-visible');
+                    } else {
+                        entry.target.classList.remove('fade-in-visible');
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+
+        if (sectionRef.current) {
+            observer.observe(sectionRef.current);
+        }
+
+        return () => {
+            if (sectionRef.current) {
+                observer.unobserve(sectionRef.current);
+            }
+        };
+    }, []);
+
+    return (
+        <section ref={sectionRef} id={id} className={`relative py-24 px-4 sm:px-6 lg:px-8 fade-in ${className}`}>
+             <div className="max-w-7xl mx-auto">
+                {children}
+            </div>
+        </section>
+    );
+};
+
+// --- Main Components (Structured like separate files) ---
+
+const CustomCursor = () => {
+    const cursorRef = useRef(null);
+    const followerRef = useRef(null);
+
+    useEffect(() => {
+        const moveCursor = (e) => {
+            if (cursorRef.current && followerRef.current) {
+                cursorRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+                followerRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+            }
+        };
+
+        const onHover = () => {
+             if (followerRef.current) followerRef.current.classList.add('active');
+        };
+        
+        const onLeave = () => {
+            if (followerRef.current) followerRef.current.classList.remove('active');
+        };
+
+        window.addEventListener('mousemove', moveCursor);
+        document.querySelectorAll('a, button, [role="button"]').forEach(el => {
+            el.addEventListener('mouseenter', onHover);
+            el.addEventListener('mouseleave', onLeave);
+        });
+
+        return () => {
+            window.removeEventListener('mousemove', moveCursor);
+            document.querySelectorAll('a, button, [role="button"]').forEach(el => {
+                el.removeEventListener('mouseenter', onHover);
+                el.removeEventListener('mouseleave', onLeave);
+            });
+        };
+    }, []);
+
+    return (
+        <>
+            <div ref={cursorRef} className="custom-cursor hidden md:block"></div>
+            <div ref={followerRef} className="custom-cursor-follower hidden md:block"></div>
+        </>
+    );
+};
+
+const Header = ({ activeSection }) => {
+    const sections = ['home', 'about', 'skills', 'projects', 'contact'];
+
+    const scrollToSection = (id) => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    return (
+        <header className="hidden md:flex fixed top-6 left-1/2 -translate-x-1/2 z-50">
+            <nav className="flex items-center gap-4 bg-white/10 dark:bg-neutral-900/50 backdrop-blur-lg shadow-lg px-6 py-3 rounded-full">
+                <a onClick={() => scrollToSection('home')} className="text-lg font-bold cursor-pointer animated-gradient-text pr-2">PAVAN D</a>
+                <div className="w-px h-6 bg-neutral-300 dark:bg-neutral-700"></div>
+                <div className="flex items-center gap-5">
+                    {sections.map(section => (
+                         <a key={section} onClick={() => scrollToSection(section)} className={`capitalize cursor-pointer transition-colors text-sm ${activeSection === section ? 'text-green-500 dark:text-green-400' : 'text-neutral-600 dark:text-neutral-300 hover:text-black dark:hover:text-white'}`}>{section}</a>
+                    ))}
+                </div>
+            </nav>
+        </header>
+    );
+};
+
+const MobileMenuButton = ({ onMenuClick }) => {
+     return (
+        <button onClick={onMenuClick} className="md:hidden fixed top-6 right-6 z-50 flex items-center gap-2 bg-white/10 dark:bg-neutral-800/50 backdrop-blur-sm text-neutral-800 dark:text-white px-4 py-2 rounded-full hover:bg-white/20 dark:hover:bg-neutral-700 transition-colors duration-300 shadow-lg">
+            <span>Menu</span>
+        </button>
+    );
+};
+
+const MobileMenu = ({ isOpen, onClose, activeSection }) => {
+    const sections = ['home', 'about', 'resume', 'skills', 'projects', 'achievements', 'contact'];
+    
+    const scrollToSection = (id) => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+        onClose();
+    };
+    
+    return (
+        <div className={`fixed inset-0 bg-black bg-opacity-80 backdrop-blur-lg z-50 transform transition-transform duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+            <div className="flex justify-end p-6">
+                 <button onClick={onClose} className="text-white text-3xl">&times;</button>
+            </div>
+            <nav className="flex flex-col items-center justify-center h-full -mt-16">
+                {sections.map((section) => (
+                    <a key={section} onClick={() => scrollToSection(section)} className={`capitalize text-4xl my-4 cursor-pointer transition-colors duration-300 ${activeSection === section ? 'text-green-400' : 'text-neutral-300 hover:text-white'}`}>
+                        {section}
+                    </a>
+                ))}
+            </nav>
+        </div>
+    );
+};
+
+
+const Hero = ({ name, title, summary }) => {
+    const scrollToProjects = () => {
+        document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    return (
+        <section id="home" className="min-h-screen flex flex-col justify-center items-start px-4 sm:px-6 lg:px-8 relative">
+            <div className="max-w-7xl mx-auto w-full">
+                <div className="scroll-indicator absolute right-0 top-1/2 -translate-y-1/2 hidden md:flex items-center transform -rotate-90">
+                    <span className="text-neutral-500 uppercase tracking-widest text-sm">Scroll</span>
+                    <div className="w-10 h-px bg-neutral-500 ml-4"></div>
+                </div>
+                <h2 className="text-lg text-neutral-600 dark:text-neutral-400 font-light">Hey, I'm a {title}</h2>
+                <h1 className="hero-name-glow text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold my-4 uppercase tracking-tighter animated-gradient-text" style={{ lineHeight: '1' }}>{name}</h1>
+                <div className="mt-12 max-w-2xl flex flex-col md:flex-row items-start md:items-center gap-6">
+                    <p className="text-neutral-600 dark:text-neutral-300 text-lg">{summary}</p>
+                    <button onClick={scrollToProjects} className="gradient-button flex-shrink-0 text-black font-bold py-3 px-6 rounded-full whitespace-nowrap">
+                        View My Work
+                    </button>
+                </div>
+            </div>
+        </section>
+    );
+};
+
+const About = ({ education }) => {
+    return (
+        <Section id="about">
+            <div className="grid md:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 className="text-sm uppercase text-neutral-500 tracking-widest mb-2">// About Me</h2>
+                    <h3 className="text-4xl md:text-5xl font-bold text-neutral-800 dark:text-white mb-6">Driven by Data, Defined by Results.</h3>
+                    <p className="text-neutral-600 dark:text-neutral-300 text-lg mb-4">
+                        I am passionate about solving real-world problems by turning ideas into clean, maintainable, and impactful data-driven solutions. You'll find me building side projects, diving into new tech stacks, or simply exploring what's next in the world of AI and web development.
+                    </p>
+                     <p className="text-neutral-600 dark:text-neutral-300 text-lg">
+                        My goal is to leverage my skills in machine learning and data science to contribute to innovative projects and drive business value.
+                    </p>
+                </div>
+                 <div>
+                    <h2 className="text-sm uppercase text-neutral-500 tracking-widest mb-2">// Education</h2>
+                    <div className="interactive-card bg-white dark:bg-neutral-800/50 p-6 rounded-lg border border-neutral-200 dark:border-neutral-700">
+                        <h4 className="text-xl font-bold text-neutral-800 dark:text-white">{education.degree}</h4>
+                        <p className="text-green-600 dark:text-green-400 mt-1">{education.institution}</p>
+                        <p className="text-neutral-500 dark:text-neutral-400 text-sm mt-2">{education.location}</p>
+                        <div className="flex justify-between items-baseline mt-4">
+                            <span className="text-neutral-700 dark:text-neutral-300">{education.duration}</span>
+                            <span className="font-bold text-green-800 dark:text-white bg-green-100 dark:bg-green-500/10 dark:text-green-400 px-2 py-1 rounded-md text-sm">CGPA: {education.cgpa}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Section>
+    );
+};
+
+const DownloadResume = () => {
+    return (
+        <Section id="resume">
+            <div className="text-center bg-white dark:bg-neutral-800/50 border border-neutral-200 dark:border-neutral-700 rounded-lg p-12 float-animation">
+                <h2 className="text-3xl md:text-4xl font-bold text-neutral-800 dark:text-white mb-4">Interested in My Work?</h2>
+                <p className="text-neutral-600 dark:text-neutral-300 max-w-2xl mx-auto mb-8">
+                    You can download a PDF version of my resume to get a more detailed look at my experience and qualifications.
+                </p>
+                <a
+                    href="/Pavan D .pdf" 
+                    download="Pavan_D_Resume.pdf"
+                    className="gradient-button inline-block text-black font-bold py-3 px-8 rounded-full"
+                >
+                    Download Resume
+                </a>
+                <p className="text-neutral-500 text-xs mt-4">Note: To make this link work, please place your resume file named "Pavan D .pdf" in the `public` folder of your React project.</p>
+            </div>
+        </Section>
+    );
+};
+
+const Skills = ({ skills }) => {
+    const CodeIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-neutral-500"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>;
+    
+    const skillLinks = {
+        'Python': 'https://www.python.org/',
+        'SQL (MySQL)': 'https://www.mysql.com/',
+        'Generative AI': 'https://en.wikipedia.org/wiki/Generative_artificial_intelligence',
+        'CNN': 'https://en.wikipedia.org/wiki/Convolutional_neural_network',
+        'LLMs': 'https://en.wikipedia.org/wiki/Large_language_model',
+        'Pandas': 'https://pandas.pydata.org/',
+        'NumPy': 'https://numpy.org/',
+        'Matplotlib': 'https://matplotlib.org/',
+        'Scikit-learn': 'https://scikit-learn.org/',
+        'LangChain': 'https://www.langchain.com/',
+        'React.js': 'https://react.dev/',
+        'FastAPI': 'https://fastapi.tiangolo.com/',
+        'Tailwind CSS': 'https://tailwindcss.com/',
+        'Tableau': 'https://www.tableau.com/',
+        'PowerBI': 'https://powerbi.microsoft.com/',
+        'Figma': 'https://www.figma.com/',
+        'BigQuery': 'https://cloud.google.com/bigquery',
+        'Git': 'https://git-scm.com/',
+        'GitHub': 'https://github.com/',
+    };
+
+    return (
+        <Section id="skills">
+            <h2 className="text-sm uppercase text-neutral-500 tracking-widest mb-2">// My Skills</h2>
+            <h3 className="text-4xl md:text-5xl font-bold text-neutral-800 dark:text-white mb-12">The Tools Behind My Work</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {skills.map((skillCategory) => (
+                    <div key={skillCategory.category} className="interactive-card bg-white dark:bg-neutral-800/20 p-6 rounded-lg border border-neutral-200 dark:border-neutral-800">
+                        <div className="flex items-center justify-between mb-4 pb-4 border-b border-neutral-200 dark:border-neutral-700">
+                            <h4 className="text-xl text-neutral-800 dark:text-white font-semibold">{skillCategory.category}</h4>
+                            <CodeIcon />
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                            {skillCategory.items.map((item) => {
+                                const url = skillLinks[item];
+                                const commonClasses = "bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 text-sm font-medium px-3 py-1 rounded-full transition-all duration-300 transform hover:scale-110 hover:shadow-lg hover:shadow-green-500/20";
+                                if (url) {
+                                    return (
+                                        <a key={item} href={url} target="_blank" rel="noopener noreferrer" className={`${commonClasses} hover:bg-green-100 dark:hover:bg-green-500/20 hover:text-green-700 dark:hover:text-green-400`}>
+                                            {item}
+                                        </a>
+                                    );
+                                }
+                                return (
+                                    <span key={item} className={commonClasses}>
+                                        {item}
+                                    </span>
+                                );
+                            })}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </Section>
+    );
+};
+
+
+const Projects = ({ projects }) => {
+    const GithubIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>;
+    const ExternalLinkIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>;
+    
+    return (
+        <Section id="projects">
+            <h2 className="text-sm uppercase text-neutral-500 tracking-widest mb-2">// Explore Work</h2>
+            <h3 className="text-4xl md:text-5xl font-bold text-neutral-800 dark:text-white mb-12">A Showcase of My Latest Projects</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                {projects.map((project, index) => (
+                    <div key={index} className="flex flex-col group interactive-card bg-white dark:bg-neutral-800/20 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800">
+                        <div className="overflow-hidden rounded-lg shadow-2xl mb-6">
+                           <img src={project.imageUrl} alt={project.title} className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <div>
+                            <h4 className="text-2xl font-bold text-neutral-800 dark:text-white mb-2">{project.title}</h4>
+                            <p className="text-neutral-600 dark:text-neutral-400 mb-4 flex-grow">{project.description}</p>
+                            <div className="flex flex-wrap gap-2 mb-4">
+                                {project.tags.map(tag => <span key={tag} className="bg-green-100 dark:bg-green-500/10 text-green-700 dark:text-green-400 text-xs font-bold px-3 py-1 rounded-full">{tag.toUpperCase()}</span>)}
+                            </div>
+                            <div className="flex items-center gap-4 mt-auto">
+                                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-neutral-600 dark:text-neutral-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">
+                                    <GithubIcon /> Code
+                                </a>
+                                 <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-neutral-600 dark:text-neutral-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">
+                                    <ExternalLinkIcon /> Live Demo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </Section>
+    );
+};
+
+const AchievementsAndCerts = ({ achievements, certifications }) => {
+    return (
+        <Section id="achievements">
+             <div className="grid md:grid-cols-2 gap-16">
+                 <div>
+                    <h2 className="text-sm uppercase text-neutral-500 tracking-widest mb-2">// Achievements</h2>
+                    <h3 className="text-4xl md:text-5xl font-bold text-neutral-800 dark:text-white mb-8">Milestones & Recognition</h3>
+                    <div className="space-y-6">
+                        {achievements.map((ach, index) => (
+                             <div key={index} className="interactive-card bg-white dark:bg-neutral-800/50 p-6 rounded-lg border border-neutral-200 dark:border-neutral-700">
+                                <h4 className="font-bold text-lg text-neutral-800 dark:text-white">{ach.title}</h4>
+                                <p className="text-neutral-600 dark:text-neutral-400 text-sm mt-1">{ach.description}</p>
+                                {ach.date && <p className="text-xs text-green-600 dark:text-green-400 mt-2">{ach.date}</p>}
+                            </div>
+                        ))}
+                    </div>
+                 </div>
+                 <div>
+                    <h2 className="text-sm uppercase text-neutral-500 tracking-widest mb-2">// Certifications</h2>
+                    <h3 className="text-4xl md:text-5xl font-bold text-neutral-800 dark:text-white mb-8">Continuous Learning</h3>
+                     <div className="space-y-6">
+                        {certifications.map((cert, index) => (
+                             <div key={index} className="interactive-card bg-white dark:bg-neutral-800/50 p-6 rounded-lg border border-neutral-200 dark:border-neutral-700 flex items-center gap-4">
+                                {cert.icon()}
+                                <div>
+                                    <h4 className="font-bold text-lg text-neutral-800 dark:text-white">{cert.name}</h4>
+                                    <p className="text-neutral-600 dark:text-neutral-400 text-sm mt-1">{cert.issuer}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                 </div>
+             </div>
+        </Section>
+    );
+};
+
+const Testimonials = ({ testimonials }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const nextTestimonial = () => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+    };
+
+    const prevTestimonial = () => {
+        setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length);
+    };
+    
+    const current = testimonials[currentIndex];
+
+    return (
+        <Section id="testimonials">
+            <h2 className="text-sm uppercase text-neutral-500 tracking-widest mb-2">// Testimonials</h2>
+            <h3 className="text-4xl md:text-5xl font-bold text-neutral-800 dark:text-white text-center mb-12">What People Say About My Work</h3>
+            <div className="relative max-w-3xl mx-auto">
+                <div className="bg-white dark:bg-neutral-800/20 p-8 rounded-lg border border-neutral-200 dark:border-neutral-800 shadow-lg text-center">
+                     <p className="text-xl md:text-2xl font-light text-neutral-700 dark:text-neutral-200 leading-relaxed mb-6">
+                        "{current.quote}"
+                     </p>
+                     <div className="flex items-center justify-center gap-4">
+                        <img src={current.image} alt={current.name} className="w-16 h-16 rounded-full object-cover border-2 border-neutral-200 dark:border-neutral-700"/>
+                        <div>
+                            <p className="text-neutral-800 dark:text-white font-bold">{current.name}</p>
+                            <p className="text-neutral-600 dark:text-neutral-400">{current.title}</p>
+                        </div>
+                     </div>
+                </div>
+                 <button onClick={prevTestimonial} className="absolute top-1/2 -translate-y-1/2 -left-6 bg-white/50 dark:bg-neutral-800/50 text-neutral-700 dark:text-neutral-300 hover:bg-white dark:hover:bg-neutral-700 p-3 rounded-full transition-colors duration-300 shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                 <button onClick={nextTestimonial} className="absolute top-1/2 -translate-y-1/2 -right-6 bg-white/50 dark:bg-neutral-800/50 text-neutral-700 dark:text-neutral-300 hover:bg-white dark:hover:bg-neutral-700 p-3 rounded-full transition-colors duration-300 shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
+            </div>
+        </Section>
+    );
+};
+
+const Footer = ({ name, contact }) => {
+    return (
+        <footer id="contact" className="px-4 sm:px-6 lg:px-8 py-16 border-t border-neutral-200 dark:border-neutral-800">
+            <div className="max-w-7xl mx-auto text-center">
+                <h3 className="text-3xl md:text-4xl font-bold text-neutral-800 dark:text-white mb-4">Let's Connect</h3>
+                <p className="text-neutral-600 dark:text-neutral-400 max-w-xl mx-auto mb-8">
+                    I'm currently seeking new opportunities. If you have a project in mind or just want to say hi, feel free to reach out.
+                </p>
+                <a href={`mailto:${contact.email}`} className="text-xl md:text-2xl text-green-600 dark:text-green-400 hover:text-green-500 dark:hover:text-green-300 transition-colors duration-300 font-mono">
+                    {contact.email}
+                </a>
+                <div className="flex justify-center gap-6 mt-8">
+                    <a href={contact.github} target="_blank" rel="noopener noreferrer" className="text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-colors">GitHub</a>
+                    <a href={contact.linkedin} target="_blank" rel="noopener noreferrer" className="text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-colors">LinkedIn</a>
+                </div>
+                 <p className="text-neutral-400 dark:text-neutral-600 text-sm mt-16">&copy; {new Date().getFullYear()} {name}. All Rights Reserved.</p>
+            </div>
+        </footer>
+    );
+};
+
+const ThemeToggle = ({ theme, toggleTheme }) => {
+    const SunIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>;
+    const MoonIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>;
+
+    return (
+         <button 
+            onClick={toggleTheme}
+            className="fixed bottom-6 left-6 z-50 bg-white/20 dark:bg-neutral-800/50 backdrop-blur-sm p-3 rounded-full text-neutral-800 dark:text-white hover:bg-white/40 dark:hover:bg-neutral-700 transition-all duration-300 shadow-lg"
+            aria-label="Toggle theme"
+         >
+            {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+         </button>
+    );
+};
+
+const BackToTopButton = () => {
+    const [isVisible, setIsVisible] = useState(false);
+
+    const toggleVisibility = () => {
+        if (window.pageYOffset > 300) {
+            setIsVisible(true);
+        } else {
+            setIsVisible(false);
+        }
+    };
+
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', toggleVisibility);
+        return () => {
+            window.removeEventListener('scroll', toggleVisibility);
+        };
+    }, []);
+
+    return (
+        <button
+            onClick={scrollToTop}
+            className={`fixed bottom-6 right-6 z-50 bg-white/20 dark:bg-neutral-800/50 backdrop-blur-sm p-3 rounded-full text-neutral-800 dark:text-white hover:bg-white/40 dark:hover:bg-neutral-700 transition-all duration-300 shadow-lg ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+            aria-label="Back to top"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+        </button>
+    )
+}
+
+// --- App Component (The main entry point) ---
+
+export default function App() {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [theme, setTheme] = useState('dark');
+    const [activeSection, setActiveSection] = useState('home');
+
+    const sectionRefs = useRef([]);
+
+    const toggleTheme = () => {
+        setTheme(prevTheme => (prevTheme === 'dark' ? 'light' : 'dark'));
+    };
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setActiveSection(entry.target.id);
+                    }
+                });
+            },
+            { rootMargin: '-30% 0px -70% 0px' }
+        );
+
+        document.querySelectorAll('section[id]').forEach(section => {
+            observer.observe(section);
+        });
+
+        return () => {
+            document.querySelectorAll('section[id]').forEach(section => {
+                observer.unobserve(section);
+            });
+        };
+    }, []);
+
+    useEffect(() => {
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }, [theme]);
+
+    useEffect(() => {
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap');
+            
+            body {
+                background-color: #F5F5F5; /* Light mode default */
+                color: #171717; /* Light mode text */
+                font-family: 'Inter', sans-serif;
+                transition: background-color 0.5s ease, color 0.5s ease;
+            }
+
+            .dark body {
+                background-color: #0D0D0D;
+                color: #F5F5F5;
+            }
+
+            ::-webkit-scrollbar { width: 8px; }
+            ::-webkit-scrollbar-track { background: #F5F5F5; }
+            ::-webkit-scrollbar-thumb { background: #D4D4D4; border-radius: 4px; }
+            ::-webkit-scrollbar-thumb:hover { background: #A3A3A3; }
+
+            .dark ::-webkit-scrollbar-track { background: #0D0D0D; }
+            .dark ::-webkit-scrollbar-thumb { background: #2D2D2D; }
+            .dark ::-webkit-scrollbar-thumb:hover { background: #3F3F3F; }
+
+            .custom-cursor {
+                position: fixed; left: -5px; top: -5px; width: 10px; height: 10px;
+                background-color: #22c55e; border-radius: 50%; pointer-events: none;
+                z-index: 9999; transition: transform 0.1s ease-out;
+            }
+            .dark .custom-cursor { background-color: #4ADE80; }
+
+            .custom-cursor-follower {
+                position: fixed; left: -20px; top: -20px; width: 40px; height: 40px;
+                border: 1px solid #A3A3A3; border-radius: 50%; pointer-events: none;
+                z-index: 9998; transition: all 0.3s ease-out;
+            }
+            .dark .custom-cursor-follower { border-color: #4A4A4A; }
+
+            .custom-cursor-follower.active {
+                transform: scale(1.5);
+                background-color: rgba(34, 197, 94, 0.1);
+                border-color: rgba(34, 197, 94, 0.5);
+            }
+            .dark .custom-cursor-follower.active {
+                 background-color: rgba(74, 222, 128, 0.1);
+                 border-color: rgba(74, 222, 128, 0.5);
+            }
+
+            .fade-in {
+                opacity: 0; transform: translateY(30px);
+                transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            }
+            .fade-in-visible {
+                opacity: 1; transform: translateY(0);
+            }
+            
+            .animated-gradient-text {
+                background: linear-gradient(90deg, #10B981, #A78BFA, #F472B6, #10B981);
+                background-size: 400% auto;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                animation: animated-gradient 3s linear infinite;
+            }
+            .dark .animated-gradient-text {
+                 background-image: linear-gradient(90deg, #4ADE80, #A78BFA, #F472B6, #4ADE80);
+            }
+
+            @keyframes animated-gradient { to { background-position: 400% center; } }
+            
+            .hero-name-glow {
+                position: relative;
+            }
+            .dark .hero-name-glow::before {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                width: 120%;
+                height: 120%;
+                background: radial-gradient(circle, rgba(167, 139, 250, 0.15) 0%, rgba(167, 139, 250, 0) 70%);
+                z-index: -1;
+                animation: pulse-glow 5s infinite ease-in-out;
+            }
+
+            @keyframes pulse-glow {
+                0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.95); }
+                50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+            }
+
+            @keyframes float {
+                0% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+                100% { transform: translateY(0px); }
+            }
+            .float-animation {
+                animation: float 4s ease-in-out infinite;
+            }
+
+            @keyframes scroll-bounce {
+                0%, 100% { transform: translateY(0) rotate(-90deg); }
+                50% { transform: translateY(-15px) rotate(-90deg); }
+            }
+            .scroll-indicator {
+                animation: scroll-bounce 2s infinite ease-in-out;
+            }
+            
+            .gradient-button {
+                background-size: 200% auto;
+                background-image: linear-gradient(to right, #4ADE80 0%, #34D399 50%, #4ADE80 100%);
+                transition: background-position 0.5s ease;
+            }
+            .gradient-button:hover {
+                background-position: right center;
+            }
+            
+            .interactive-card {
+                position: relative;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                transform-style: preserve-3d;
+            }
+            .interactive-card:hover {
+                transform: translateY(-8px) rotateX(var(--rotateX)) rotateY(var(--rotateY));
+            }
+            .dark .interactive-card::before {
+                content: '';
+                position: absolute;
+                top: 0; left: 0; right: 0; bottom: 0;
+                border-radius: 0.5rem; /* same as rounded-lg */
+                border: 1px solid transparent;
+                background: linear-gradient(to bottom right, #4ade80, #a78bfa) border-box;
+                -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+                -webkit-mask-composite: destination-out;
+                mask-composite: exclude;
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out;
+            }
+            .dark .interactive-card:hover::before {
+                opacity: 0.5;
+            }
+
+            @keyframes blob-1 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, -20px) scale(1.1); } }
+            .animate-blob-1 { animation: blob-1 8s infinite ease-in-out; }
+            @keyframes blob-2 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-20px, 15px) scale(0.9); } }
+            .animate-blob-2 { animation: blob-2 10s infinite ease-in-out; }
+            @keyframes blob-3 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(15px, 25px) scale(1.1); } }
+            .animate-blob-3 { animation: blob-3 9s infinite ease-in-out; }
+
+        `;
+        document.head.appendChild(style);
+        
+        const handleMouseMove = (e) => {
+            document.querySelectorAll('.interactive-card').forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const rotateY = -1 * ((x - rect.width / 2) / (rect.width / 2)) * 5;
+                const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * 5;
+                
+                card.style.setProperty('--rotateX', `${rotateX}deg`);
+                card.style.setProperty('--rotateY', `${rotateY}deg`);
+            });
+        };
+        
+        window.addEventListener('mousemove', handleMouseMove);
+
+        // Set initial theme
+        document.documentElement.classList.add(theme);
+
+        return () => {
+            document.head.removeChild(style);
+            window.removeEventListener('mousemove', handleMouseMove);
+        }
+    }, [theme]);
+
+    return (
+        <main className="relative z-0">
+            <BackgroundBlobs />
+            <CustomCursor />
+            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+            <BackToTopButton />
+            <Header onMenuClick={() => setIsMenuOpen(true)} activeSection={activeSection} />
+            <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} activeSection={activeSection} />
+            
+            <Hero name={portfolioData.name} title={portfolioData.title} summary={portfolioData.summary} />
+            <About education={portfolioData.education} />
+            <DownloadResume />
+            <Skills skills={portfolioData.skills} />
+            <Projects projects={portfolioData.projects} />
+            <AchievementsAndCerts achievements={portfolioData.achievements} certifications={portfolioData.certifications} />
+            <Testimonials testimonials={portfolioData.testimonials} />
+            <Footer name={portfolioData.name} contact={portfolioData.contact} />
+        </main>
+    );
+}
+
